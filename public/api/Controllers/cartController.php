@@ -7,8 +7,8 @@ class cartController
     function __construct()
     {
         $headers = getallheaders();
-        if (!empty($headers["Authorization"])) {
-            $token = $headers["Authorization"];
+        if (!empty($headers["authorization"]) || !empty($headers["Authorization"])) {
+            $token = !empty($headers["authorization"]) ? $headers["authorization"] : $headers["Authorization"];
             require_once ROOT_DIR . "/Models/userModel.php";
             $autch = new autchModel();
             if ($uid = $autch->check(null, null, $token)) {

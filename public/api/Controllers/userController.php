@@ -11,8 +11,8 @@ class userController
     function GET()
     {
         $headers = getallheaders();
-        if (!empty($headers["Authorization"])) {
-            $token = $headers["Authorization"];
+        if (!empty($headers["authorization"]) || !empty($headers["Authorization"])) {
+            $token = !empty($headers["authorization"]) ? $headers["authorization"] : $headers["Authorization"];
             try {
                 $result['status'] = "OK";
                 $result['profile'] = $this->model->getData($token);
