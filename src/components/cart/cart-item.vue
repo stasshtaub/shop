@@ -80,6 +80,7 @@ input.cart-item__count {
   border: none;
   border-radius: 5px;
   background-color: #efefef;
+  color: black;
 }
 .cart-item__delete {
   margin-left: 10px;
@@ -88,5 +89,6 @@ input.cart-item__count {
   width: 25px;
   border: unset;
   text-align: center;
+  background-color: unset !important;
 }
 </style>

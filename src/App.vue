@@ -35,10 +35,17 @@ export default {
   padding: 0;
 }
 
+body::-webkit-scrollbar {
+  width: 0;
+}
+
 body {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   overflow-x: hidden;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+  scrollbar-width: none;
 }
 
 .container {
@@ -49,6 +56,11 @@ body {
 
 button {
   cursor: pointer;
+  height: 40px;
+  border-radius: 10px;
+  border: unset;
+  background-color: #1d85d0;
+  color: #fff;
 }
 
 /* .loader {

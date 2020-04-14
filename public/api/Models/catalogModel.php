@@ -12,9 +12,16 @@ class catalogModel
      * Возвращает все товары из БД
      * @return array массив товаров
      */
-    function getAllProduct()
+    function getAllProduct($filters)
     {
         $query = "SELECT product.id pid, product.name, product.price, picture.img FROM product JOIN picture ON product.main_picture=picture.id WHERE count>0 ORDER BY pid";
+        if ($filters) {
+            $for_sql = [];
+            foreach ($filters as $key => $value) {
+                $for_sql[] = "$key='$value'";
+            }
+            $query = "SELECT product.id pid, product.name, product.price, picture.img FROM product JOIN picture ON product.main_picture=picture.id WHERE count>0 AND " . implode(" AND ", $for_sql) . " ORDER BY pid";
+        }
         return $this->DB->execute($query);
     }
 

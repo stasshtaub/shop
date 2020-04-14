@@ -1,5 +1,6 @@
 <?
 require_once ROOT_DIR . "/Models/registrationModel.php";
+require_once ROOT_DIR . "/Core/Captcha.php";
 class registrationController
 {
     private $model;
@@ -8,9 +9,9 @@ class registrationController
         $this->model = new registrationModel();
     }
 
-    function POST($login, $password, $confirmPassword, $name)
+    function POST($login, $password, $confirmPassword, $name, $grecaptcha)
     {
-        $validateError = $this->validateRegData($login, $password, $confirmPassword, $name);
+        $validateError = $this->validateRegData($login, $password, $confirmPassword, $name, $grecaptcha);
         if (empty($validateError)) {
             try {
                 $result = $this->model->register($login, $password, $name);
@@ -28,7 +29,7 @@ class registrationController
         }
     }
 
-    function validateRegData($login, $password, $confirmPassword, $name)
+    function validateRegData($login, $password, $confirmPassword, $name, $grecaptcha)
     {
         $errors = [];
         if (strlen($login) < 6) {
@@ -41,6 +42,9 @@ class registrationController
         }
         if (!strlen($name)) {
             $errors["name"] = "Введите имя";
+        }
+        if (!Captcha::check($grecaptcha)) {
+            $errors["captcha"] = "Неверная каптча";
         }
         return $errors;
     }

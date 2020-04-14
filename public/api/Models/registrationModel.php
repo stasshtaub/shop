@@ -30,7 +30,7 @@ class registrationModel
             $this->DB->execute($query, $params);
             $user = new userModel();
             return [
-                "profile"->$user->getData($token),
+                "profile" => $user->getData($token),
                 "token" => $token
             ];
         } else {

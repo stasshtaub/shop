@@ -1,18 +1,17 @@
 <?
-require_once ROOT_DIR . "/Models/catalogModel.php";
-class catalogController
+require_once ROOT_DIR . "/Models/filterModel.php";
+class filterController
 {
     private $model;
     function __construct()
     {
-        $this->model = new catalogModel();
+        $this->model = new filterModel();
     }
 
-    function GET($filters)
+    function GET()
     {
-        $filters = json_decode($filters, true);
         try {
-            $result['data'] = $this->model->getAllProduct($filters);
+            $result['filters'] = $this->model->getFilters();
             $result['status'] = 'OK';
             echo json_encode($result, JSON_PRETTY_PRINT);
         } catch (Exception $e) {

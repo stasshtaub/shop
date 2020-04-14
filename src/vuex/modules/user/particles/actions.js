@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export default {
-    REGISTER_REQUEST: ({ commit }, { username, password, confirmPassword, name }) => {
+    REGISTER_REQUEST: ({ commit }, { username, password, confirmPassword, name, recaptchaToken }) => {
         return new Promise((resolve, reject) => {
             commit("REGISTER_REQUEST");
             var data = new URLSearchParams();
@@ -9,6 +9,7 @@ export default {
             data.append("password", password);
             data.append("confirmPassword", confirmPassword);
             data.append("name", name);
+            data.append("g-recaptcha-response", recaptchaToken);
             axios.post('/api/registration', data)
                 .then(resp => {
                     switch (resp.data.status) {
@@ -31,12 +32,13 @@ export default {
                 })
         });
     },
-    AUTH_REQUEST: ({ commit }, { username, password }) => {
+    AUTH_REQUEST: ({ commit }, { username, password, recaptchaToken }) => {
         return new Promise((resolve, reject) => {
             commit("AUTH_REQUEST");
             var data = new URLSearchParams();
             data.append("username", username);
             data.append("password", password);
+            data.append("g-recaptcha-response", recaptchaToken);
             axios.post('/api/autch', data)
                 .then(resp => {
                     const token = resp.data.token;

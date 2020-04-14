@@ -57,6 +57,7 @@ p.item__name {
   width: 100%;
   border: unset;
   margin-top: 15px;
+  border-radius: unset;
 }
 
 .item__button.in-cart {

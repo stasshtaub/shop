@@ -22,6 +22,15 @@
           placeholder="Подтверждение пароля"
         />
       </div>
+      <div class="input-wrapper">
+        <div class="errorTooltip" v-if="errors.captcha">{{errors.captcha}}</div>
+        <vuerecaptcha
+          sitekey="6LeheekUAAAAAPC5nUZ5g7udzHEpqYT77PQLmDyL"
+          :loadRecaptchaScript="true"
+          @verify="captchaVerifyHandler"
+          @expired="onCaptchaExpired"
+        ></vuerecaptcha>
+      </div>
       <button type="submit">Зарегистрироваться</button>
     </form>
   </section>
@@ -29,7 +38,12 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import vuerecaptcha from "vue-recaptcha";
+
 export default {
+  components: {
+    vuerecaptcha
+  },
   data: function() {
     return {
       name: "",
@@ -40,8 +54,10 @@ export default {
         name: null,
         username: null,
         password: null,
-        confirmPassword: null
-      }
+        confirmPassword: null,
+        captcha: null
+      },
+      recaptchaToken: null
     };
   },
   computed: {
@@ -49,7 +65,7 @@ export default {
   },
   methods: {
     ...mapActions(["REGISTER_REQUEST"]),
-    register() {
+    validate() {
       for (let key in this.errors) {
         this.errors[key] = null;
       }
@@ -64,19 +80,35 @@ export default {
       } else if (this.password != this.confirmPassword) {
         this.errors.confirmPassword = "Пароли не совпадают";
       }
-      if (
+      if (!window.grecaptcha.getResponse()) {
+        this.errors.captcha = "Подтвердите, что вы не робот";
+      }
+      return (
         !this.errors.name &&
         !this.errors.username &&
         !this.errors.password &&
-        !this.errors.confirmPassword
-      ) {
-        console.log("Ошибок нет вызываем экшен");
-        const { username, password, confirmPassword, name } = this;
+        !this.errors.confirmPassword &&
+        !this.errors.captcha
+      );
+    },
+    captchaVerifyHandler(recaptchaToken) {
+      this.recaptchaToken = recaptchaToken;
+    },
+    register() {
+      if (this.validate()) {
+        const {
+          username,
+          password,
+          confirmPassword,
+          name,
+          recaptchaToken
+        } = this;
         this.REGISTER_REQUEST({
           username,
           password,
           confirmPassword,
-          name
+          name,
+          recaptchaToken
         })
           .then(() => {
             this.$router.push("/");
@@ -95,6 +127,10 @@ export default {
                 if (data.errors.name) {
                   this.errors.name = data.errors.name;
                 }
+                if (data.errors.captcha) {
+                  this.errors.captcha = data.errors.captcha;
+                  this.$refs.vuerecaptcha.reset();
+                }
                 break;
               case "USER_ALREADY_EXIST":
                 this.errors.username = "Такой пользователь уже существует";
@@ -102,13 +138,18 @@ export default {
             }
           });
       }
+    },
+    onCaptchaExpired() {
+      this.errors.captcha = "Неверная каптча";
+      this.$refs.vuerecaptcha.reset();
     }
   },
   mounted() {
     if (this.IS_AUTHENTICATED) {
       this.$router.push("/");
     }
-  }
+  },
+  created() {}
 };
 </script>
 

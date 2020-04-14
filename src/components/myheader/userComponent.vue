@@ -56,6 +56,7 @@ export default {
   background-position: center;
 }
 .profile-info {
+  z-index: 2;
   position: absolute;
   right: 0;
   top: 140%;

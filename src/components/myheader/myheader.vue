@@ -7,13 +7,13 @@
     </div>
     <div class="right-panel">
       <searchComponent />
-      <userComponent
-        v-if="GET_PROFILE"
+      <cart
+        v-if="IS_AUTHENTICATED"
         :dispComponent="dispComponent"
         @changeDispComponent="changeDispComponent"
       />
-      <cart
-        v-if="IS_AUTHENTICATED"
+      <userComponent
+        v-if="GET_PROFILE"
         :dispComponent="dispComponent"
         @changeDispComponent="changeDispComponent"
       />
@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     toggleDarkMode() {
-      console.log("toggleDarkMode");
       localStorage.setItem("darkModeActive", this.darkMode);
     },
     changeDispComponent(component) {
@@ -128,12 +127,5 @@ a#signup {
   border-radius: 10px;
   background: #fff;
   transition: 0.2s;
-}
-#checkbox-dark:checked + label:before {
-  background: #1f1b24;
-}
-#checkbox-dark:checked + label:after {
-  left: 26px;
-  background-color: #1d85d0;
 }
 </style>

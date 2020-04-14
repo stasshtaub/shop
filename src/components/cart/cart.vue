@@ -66,6 +66,7 @@ export default {
 
 <style scoped>
 .cart-content {
+  z-index: 2;
   position: absolute;
   right: 0;
   top: 140%;
