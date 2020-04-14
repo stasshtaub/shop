@@ -21,6 +21,8 @@ export default {
                             resolve(resp.data);
                             break;
                         default:
+                            commit("AUTH_ERROR", resp.data.status);
+                            localStorage.removeItem('user-token');
                             reject(resp.data);
                             break;
                     }
@@ -41,11 +43,19 @@ export default {
             data.append("g-recaptcha-response", recaptchaToken);
             axios.post('/api/autch', data)
                 .then(resp => {
-                    const token = resp.data.token;
-                    localStorage.setItem('user-token', token);
-                    axios.defaults.headers.common['Authorization'] = token;
-                    commit("AUTH_SUCCESS", { token: token, profile: resp.data.profile });
-                    resolve(resp);
+                    switch (resp.data.status) {
+                        case "OK":
+                            var token = resp.data.token;
+                            localStorage.setItem('user-token', token);
+                            axios.defaults.headers.common['Authorization'] = token;
+                            commit("AUTH_SUCCESS", { token: token, profile: resp.data.profile });
+                            resolve(resp.data);
+                            break;
+                        default:
+                            commit("AUTH_ERROR", resp.data.status);
+                            localStorage.removeItem('user-token');
+                            reject(resp.data);
+                    }
                 })
                 .catch(err => {
                     commit("AUTH_ERROR", err);
@@ -67,7 +77,15 @@ export default {
             commit("PROFILE_REQUEST");
             axios.get('/api/user/getData/')
                 .then(resp => {
-                    commit("PROFILE_SUCCESS", resp.data.profile);
+                    switch (resp.data.status) {
+                        case "OK":
+                            commit("PROFILE_SUCCESS", resp.data.profile);
+                            break;
+                        default:
+                            commit("PROFILE_ERROR", resp.data.status);
+                            dispatch("AUTH_LOGOUT");
+
+                    }
                 })
                 .catch((error) => {
                     commit("PROFILE_ERROR", error.message);

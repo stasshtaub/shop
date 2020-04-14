@@ -22,7 +22,6 @@ class registrationController
                 echo json_encode($result, JSON_PRETTY_PRINT);
             }
         } else {
-            http_response_code(400);
             $result["status"] = "VALIDATE_ERROR";
             $result["errors"] = $validateError;
             echo json_encode($result, JSON_PRETTY_PRINT);

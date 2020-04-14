@@ -22,7 +22,6 @@ class userController
                 echo json_encode($result, JSON_PRETTY_PRINT);
             }
         } else {
-            http_response_code(401);
             $result['status'] = "NOT_FOUND_TOKEN";
             echo json_encode($result, JSON_PRETTY_PRINT);
         }

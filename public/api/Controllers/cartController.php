@@ -14,11 +14,9 @@ class cartController
             if ($uid = $autch->check(null, null, $token)) {
                 $this->model = new cartModel($uid);
             } else {
-                http_response_code(401);
                 throw new \Exception("NOT_FOUND_USER_WITH_TOKEN ($token)");
             }
         } else {
-            http_response_code(401);
             throw new \Exception("NOT_FOUND_TOKEN");
         }
     }

@@ -114,6 +114,7 @@ export default {
             this.$router.push("/");
           })
           .catch(data => {
+            window.grecaptcha.reset();
             switch (data.status) {
               case "VALIDATE_ERROR":
                 if (data.errors.username) {
@@ -129,7 +130,6 @@ export default {
                 }
                 if (data.errors.captcha) {
                   this.errors.captcha = data.errors.captcha;
-                  this.$refs.vuerecaptcha.reset();
                 }
                 break;
               case "USER_ALREADY_EXIST":
@@ -141,7 +141,7 @@ export default {
     },
     onCaptchaExpired() {
       this.errors.captcha = "Неверная каптча";
-      this.$refs.vuerecaptcha.reset();
+      window.grecaptcha.reset();
     }
   },
   mounted() {

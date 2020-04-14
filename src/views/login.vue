@@ -70,7 +70,7 @@ export default {
     },
     onCaptchaExpired() {
       this.errors.captcha = "Неверная каптча";
-      this.$refs.vuerecaptcha.reset();
+      window.grecaptcha.reset();
     },
     login() {
       if (this.validate()) {
@@ -80,6 +80,7 @@ export default {
             this.$router.push("/");
           })
           .catch(data => {
+            window.grecaptcha.reset();
             switch (data.status) {
               case "VALIDATE_ERROR":
                 if (data.errors.username) {
@@ -90,9 +91,13 @@ export default {
                 }
                 if (data.errors.captcha) {
                   this.errors.captcha = data.errors.captcha;
-                  this.$refs.vuerecaptcha.reset();
                 }
                 break;
+              case "USER_NOT_FOUND":
+                this.errors.username = "Неправильный логин и/или пароль";
+                break;
+              default:
+                console.log(data.status);
             }
           });
       }
