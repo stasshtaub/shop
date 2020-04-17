@@ -4,7 +4,7 @@ class DB
     public $pdo;
     private $host = "localhost",
         $user = "root",
-        $password = "",
+        $password = "root",
         $db_name = "magazin",
         $opt = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
