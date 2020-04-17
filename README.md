@@ -1,24 +1,28 @@
 # shop
 
-## Project setup
+## Установка
+
+### Установка зависимостей
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Запуск dev версии
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+npx vue-cli-service serve
 ```
 
-### Lints and fixes files
+### Сборка
 ```
-npm run lint
+npm vue-cli-service build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Доступ к бд
+Настраивается в /public/Core/DB.php
+По умолчанию:
+```
+host = "localhost",
+user = "root",
+password = "root",
+db_name = "magazin"
+```
