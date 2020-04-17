@@ -18,7 +18,7 @@ npm vue-cli-service build
 ```
 
 ## Доступ к бд
-Настраивается в /public/Core/DB.php
+Настраивается в /public/Core/DB.php  
 По умолчанию:
 ```
 host = "localhost",
