@@ -154,7 +154,7 @@ CREATE TABLE `user` (
   `login` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `cookie` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `avatar` text COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '\'/assets/img/noavatar.png\''
+  `avatar` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '/assets/img/noavatar.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --

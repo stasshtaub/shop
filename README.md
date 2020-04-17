@@ -1,4 +1,4 @@
-# magazin-mvc.loc
+# shop
 
 ## Project setup
 ```
