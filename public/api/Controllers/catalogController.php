@@ -8,11 +8,15 @@ class catalogController
         $this->model = new catalogModel();
     }
 
-    function GET($filters)
+    function GET($filters = null, $searchQuery = null)
     {
-        $filters = json_decode($filters, true);
+        $filters = $filters ? json_decode($filters, true) : $filters;
         try {
-            $result['data'] = $this->model->getAllProduct($filters);
+            if ($searchQuery) {
+                $result['data'] = $this->model->search($searchQuery);
+            } else {
+                $result['data'] = $this->model->getProducts($filters);
+            }
             $result['status'] = 'OK';
             echo json_encode($result, JSON_PRETTY_PRINT);
         } catch (Exception $e) {

@@ -5,4 +5,7 @@ export default {
     FILTERS(state) {
         return state.filters;
     },
+    SEARCH_RESULT(state) {
+        return state.searchResult;
+    }
 }

@@ -6,11 +6,11 @@
       name="search"
       placeholder="Поиск"
       v-model="search.query"
-      @input="gosearch"
+      @input="searchInput"
     />
-    <div class="search-result" v-if="search.result.length && dispСomponent==$options.name">
+    <div class="search-result" v-if="SEARCH_RESULT.length && show">
       <ul class="search-result__list">
-        <li class="search-result__item" v-for="(item, i) in search.result" :key="i">
+        <li class="search-result__item" v-for="(item, i) in SEARCH_RESULT" :key="i">
           <img class="search-result__preview" :src="item.img" />
           <p class="search-result__name">{{item.name}}</p>
         </li>
@@ -20,49 +20,48 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions, mapGetters } from "vuex";
+
 export default {
+  name: "searchComponent",
   props: {
-    dispСomponent: String
-  },
-  data: function() {
-    return {
-      search: {
-        query: "",
-        result: []
+    dispComponent: {
+      type: Object,
+      default() {
+        return null;
       }
-    };
+    }
+  },
+  data: () => ({
+    search: {
+      query: ""
+    }
+  }),
+  computed: {
+    ...mapGetters(["SEARCH_RESULT"]),
+    show() {
+      return this.dispComponent === this;
+    }
   },
   methods: {
-    gosearch: function() {
+    ...mapActions(["SEARCH"]),
+    changeDispComponent() {
+      this.$emit("changeDispComponent", this);
+    },
+    searchInput() {
       if (this.search.query) {
-        axios
-          .get("/api/", {
-            params: {
-              controller: "catalog",
-              action: "search",
-              data: [this.search.query]
-            }
-          })
-          .then(response => {
-            switch (response.data.status) {
-              case "OK":
-                this.search.result = response.data.data;
-                break;
-              default:
-                console.log(response.data.status);
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        this.SEARCH(this.search.query);
+        if (this.dispComponent != this) {
+          this.$emit("changeDispComponent", this);
+        }
       } else {
-        this.search.result = [];
+        this.$emit("changeDispComponent", null);
       }
     }
   }
 };
 </script>
+
 <style scoped>
 input.search {
   height: 30px;

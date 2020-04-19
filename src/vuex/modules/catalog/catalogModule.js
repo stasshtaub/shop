@@ -5,7 +5,8 @@ import getters from './particles/getters'
 export default {
     state: {
         products: [],
-        filters: {}
+        filters: {},
+        searchResult: []
     },
     mutations,
     actions,

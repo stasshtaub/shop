@@ -6,7 +6,7 @@
       <label for="checkbox-dark"></label>
     </div>
     <div class="right-panel">
-      <searchComponent />
+      <searchComponent :dispComponent="dispComponent" @changeDispComponent="changeDispComponent" />
       <cart
         v-if="IS_AUTHENTICATED"
         :dispComponent="dispComponent"

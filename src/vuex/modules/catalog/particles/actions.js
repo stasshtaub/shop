@@ -2,7 +2,7 @@ import axios from 'axios'
 export default {
     GET_PRODUCTS_FROM_API({ commit }, filters = null) {
         return axios
-            .get('/api/catalog/?filters=' + JSON.stringify(filters))
+            .get(`/api/catalog/?filters=${JSON.stringify(filters)}`)
             .then(response => {
                 var result = response.data;
                 switch (result.status) {
@@ -26,5 +26,20 @@ export default {
                         console.log(response.data.status);
                 }
             });
-    }
+    },
+    SEARCH({ commit }, searchQuery) {
+        return axios
+            .get(`/api/catalog/?filters=${null}&searchQuery=${searchQuery}`)
+            .then(response => {
+                var result = response.data;
+                switch (result.status) {
+                    case "OK":
+                        commit('SET_SEARCH', result.data);
+                        return result.data;
+                    default:
+                        console.log(result.status);
+                }
+            });
+    },
+
 }

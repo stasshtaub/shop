@@ -12,7 +12,7 @@ class catalogModel
      * Возвращает все товары из БД
      * @return array массив товаров
      */
-    function getAllProduct($filters)
+    function getProducts($filters)
     {
         $query = "SELECT product.id pid, product.name, product.price, picture.img FROM product JOIN picture ON product.main_picture=picture.id WHERE count>0 ORDER BY pid";
         if ($filters) {

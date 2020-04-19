@@ -1,6 +1,7 @@
 <template>
   <section>
     <form id="login-form" @submit.prevent="login">
+      <div class="generalError" v-if="errors.generalError">{{errors.generalError}}</div>
       <div class="input-wrapper">
         <div class="errorTooltip" v-if="errors.username">{{errors.username}}</div>
         <input v-model="username" type="text" name="login" placeholder="Логин" />
@@ -36,6 +37,7 @@ export default {
       username: "",
       password: "",
       errors: {
+        generalError: null,
         username: null,
         password: null,
         captcha: null
@@ -52,14 +54,18 @@ export default {
       for (let key in this.errors) {
         this.errors[key] = null;
       }
-      if (!this.username.length) {
-        this.errors.username = "Введите логин";
-      }
-      if (!this.password.length) {
-        this.errors.password = "Введите пароль";
-      }
-      if (!window.grecaptcha.getResponse()) {
-        this.errors.captcha = "Подтвердите, что вы не робот";
+      if (!window.grecaptcha) {
+        this.errors.generalError = "Проверьте подключение к интернету";
+      } else {
+        if (!this.username.length) {
+          this.errors.username = "Введите логин";
+        }
+        if (!this.password.length) {
+          this.errors.password = "Введите пароль";
+        }
+        if (!window.grecaptcha.getResponse()) {
+          this.errors.captcha = "Подтвердите, что вы не робот";
+        }
       }
       return (
         !this.errors.username && !this.errors.password && !this.errors.captcha
@@ -150,6 +156,17 @@ form > button {
   height: 100%;
   margin-left: 10px;
   padding: 0 20px;
+  background-color: #ff5454;
+  color: #fff;
+  font-size: 0.8rem;
+  text-align: center;
+  border-radius: 10px;
+}
+.generalError {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  line-height: 1.4rem;
   background-color: #ff5454;
   color: #fff;
   font-size: 0.8rem;
